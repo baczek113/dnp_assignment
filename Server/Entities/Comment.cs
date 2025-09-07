@@ -2,7 +2,7 @@ namespace Entities;
 
 public class Comment
 {
-    private string Body { get; set; }
-    private Post Post { get; set; }
-    private int AuthorId { get; set; }
+    public string Body { get; set; }
+    public Post Post { get; set; }
+    public int AuthorId { get; set; }
 }

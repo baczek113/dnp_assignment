@@ -2,8 +2,8 @@ namespace Entities;
 
 public class Post
 {
-    private int Id { get; set; }
-    private string Title { get; set; }
-    private string Body { get; set; }
-    private int AuthorId { get; set; }
+    public int Id { get; set; }
+    public string Title { get; set; }
+    public string Body { get; set; }
+    public int AuthorId { get; set; }
 }
