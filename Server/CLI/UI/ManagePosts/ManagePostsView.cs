@@ -51,7 +51,7 @@ public class ManagePostsView
     
     public async Task GetAllAsync()
     {
-        IQueryable<Post> posts = postRepository.GetAllAsync();
+        var posts = postRepository.GetAllAsync();
         Console.WriteLine("All posts:");
         foreach (var post in posts)
         {
@@ -62,8 +62,8 @@ public class ManagePostsView
     public async Task GetSingleAsync(ICommentRepository commentRepository)
     {
         Console.WriteLine("What post would you like to get?");
-        int postId = int.Parse(Console.ReadLine());
-        Post post = await postRepository.GetSingleAsync(postId);
+        var postId = int.Parse(Console.ReadLine());
+        var post = await postRepository.GetSingleAsync(postId);
         Console.WriteLine($"Post ID: {post.Id}, Title: {post.Title}, Body: {post.Body}");
         Console.WriteLine("Comments:");
         foreach(Comment comment in commentRepository.GetAllAsync())
