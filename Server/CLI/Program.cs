@@ -1,63 +1,15 @@
 ﻿using CLI.UI;
 using Entities;
+using FileRepositories;
 using InMemoryRepositories;
 using RepositoryContracts;
 
-IUserRepository userRepository = new UserInMemoryRepository();
 Console.WriteLine("The CLI app is starting...");
-User user1 = new();
-user1.Username = "Jakub";
-user1.Password = "1234";
-await userRepository.AddAsync(user1);
-User user2 = new();
-user2.Username = "Tymek";
-user2.Password = "2137";
-await userRepository.AddAsync(user2);
-User user3 = new();
-user3.Username = "Damian";
-user3.Password = "12";
-await userRepository.AddAsync(user3);
-User user4 = new();
-user4.Username = "Fortnite";
-user4.Password = "haha";
-await userRepository.AddAsync(user4);
-User user5 = new();
-user5.Username = "admin";
-user5.Password = "admin";
-await userRepository.AddAsync(user5);
 
-IPostRepository postRepository = new PostInMemoryRepository();
-Post post1 = new();
-post1.Title = "Charlie Kirk just got assassinated";
-post1.Body = "The CIA has murdered yet another man for saying the wrong things !!!";
-post1.AuthorId = 1;
-await postRepository.AddAsync(post1);
-Post post2 = new();
-post2.Title = "Bombs are flying at Qatar";
-post2.Body = "Israel has no chill!!!";
-post2.AuthorId = 3;
-await postRepository.AddAsync(post2);
-Post post3 = new();
-post3.Title = "Bomb drones are also flying at Poland!!";
-post3.Body = "Is ww3 lowk about to start? :00000";
-post3.AuthorId = 3;
-await postRepository.AddAsync(post3);
+IUserRepository userRepository = new UserFileRepository();
 
-ICommentRepository commentRepository = new CommentInMemoryRepository();
-Comment comment1 = new();
-comment1.AuthorId = 2;
-comment1.Body = "Lol so real";
-comment1.PostId = 1;
-await commentRepository.AddAsync(comment1);
-Comment comment2 = new();
-comment2.AuthorId = 4;
-comment2.Body = "Damn u finna get shot too, take care out there - they are watching";
-comment2.PostId = 1;
-await commentRepository.AddAsync(comment2);
-Comment comment3 = new();
-comment3.AuthorId = 5;
-comment3.Body = ":PPPP";
-comment3.PostId = 1;
-await commentRepository.AddAsync(comment3);
+IPostRepository postRepository = new PostFileRepository();
+
+ICommentRepository commentRepository = new CommentFileRepository();
     
 CliApp.StartAsync(userRepository, postRepository, commentRepository);

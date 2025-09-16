@@ -47,7 +47,7 @@ public class CommentInMemoryRepository : ICommentRepository
         return Task.FromResult(comment);
     }
 
-    public IQueryable<Comment> GetAllAsync()
+    public IQueryable<Comment> GetAll()
     {
         return comments.AsQueryable();
     }

@@ -47,7 +47,7 @@ public class UserInMemoryRepository : IUserRepository
         return Task.FromResult(user);
     }
 
-    public IQueryable<User> GetAllAsync()
+    public IQueryable<User> GetAll()
     {
         return users.AsQueryable();
     }

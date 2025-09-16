@@ -43,7 +43,7 @@ public class ManageUsersView
     
     public async Task GetAllAsync()
     {
-        IQueryable<User> users = userRepository.GetAllAsync();
+        IQueryable<User> users = userRepository.GetAll();
         Console.WriteLine("Currently registered users:");
         foreach (var user in users)
         {
