@@ -18,17 +18,14 @@ public class UserFileRepository : IUserRepository
     public async Task<User> AddAsync(User user)
     {
         string usersAsJson = await File.ReadAllTextAsync(filePath);
-
         List<User> users = JsonSerializer.Deserialize<List<User>>(usersAsJson)!;
 
-        int maxId = users.Count > 0 ? users.Max(c => c.Id) : 1;
-
+        int maxId = users.Count > 0 ? users.Max(u => u.Id) : 0;
         user.Id = maxId + 1;
 
         users.Add(user);
 
-        usersAsJson = JsonSerializer.Serialize(user);
-
+        usersAsJson = JsonSerializer.Serialize(users);
         await File.WriteAllTextAsync(filePath, usersAsJson);
 
         return user;

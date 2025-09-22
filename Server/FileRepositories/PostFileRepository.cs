@@ -27,7 +27,7 @@ public class PostFileRepository : IPostRepository
 
         posts.Add(post);
 
-        postsAsJson = JsonSerializer.Serialize(post);
+        postsAsJson = JsonSerializer.Serialize(posts);
 
         await File.WriteAllTextAsync(filePath, postsAsJson);
 
