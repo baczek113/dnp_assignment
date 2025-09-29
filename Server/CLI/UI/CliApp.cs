@@ -1,7 +1,6 @@
 using CLI.UI.ManageComments;
 using CLI.UI.ManagePosts;
 using CLI.UI.ManageUsers;
-using InMemoryRepositories;
 using RepositoryContracts;
 
 namespace CLI.UI;
