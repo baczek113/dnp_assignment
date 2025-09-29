@@ -1,5 +1,6 @@
 using ApiContracts;
 using Entities;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryContracts;
 
@@ -32,6 +33,30 @@ public class UsersController : ControllerBase
         catch (Exception e)
         {
             Console.WriteLine(e); return StatusCode(500, e.Message);
+        }
+    }
+    
+    [HttpGet] 
+    public IResult GetUsers() {
+        try
+        {
+            GetUsersDto dto = new();
+            List<UserDto> users = new();
+            foreach(User user in userRepository.GetAll())
+            {
+                users.Add(new UserDto
+                {
+                    Id = user.Id,
+                    Username = user.Username
+                });
+            }
+            dto.Users = users;
+            return Results.Ok(dto);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e); 
+            return Results.InternalServerError(e);
         }
     }
 }
