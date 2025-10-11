@@ -44,7 +44,7 @@ public class PostFileRepository : IPostRepository
         
         foreach (Post postToChange in posts)
         {
-            if (postToChange.Id != post.Id)
+            if (postToChange.Id == post.Id)
             {
                 break;
             }
@@ -68,7 +68,7 @@ public class PostFileRepository : IPostRepository
         
         foreach (Post postToChange in posts)
         {
-            if (postToChange.Id != id)
+            if (postToChange.Id == id)
             {
                 break;
             }

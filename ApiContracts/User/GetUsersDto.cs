@@ -2,5 +2,5 @@ namespace ApiContracts;
 
 public class GetUsersDto
 {
-    public List<UserDto> Users { get; set; }
+    public List<ReturnUserDto> Users { get; set; }
 }

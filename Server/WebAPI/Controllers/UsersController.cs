@@ -18,12 +18,12 @@ public class UsersController : ControllerBase
     }
     
     [HttpPost] 
-    public async Task<ActionResult<UserDto>> AddUser([FromBody] CreateUserDto request) {
+    public async Task<ActionResult<ReturnUserDto>> AddUser([FromBody] CreateUserDto request) {
         try
         {
             User user = new(request.Username, request.Password);
             User created = await userRepository.AddAsync(user);
-            UserDto dto = new()
+            ReturnUserDto dto = new()
             {
                 Id = created.Id,
                 Username = created.Username
@@ -32,7 +32,8 @@ public class UsersController : ControllerBase
         }
         catch (Exception e)
         {
-            Console.WriteLine(e); return StatusCode(500, e.Message);
+            Console.WriteLine(e); 
+            return StatusCode(500, e.Message);
         }
     }
     
@@ -41,10 +42,10 @@ public class UsersController : ControllerBase
         try
         {
             GetUsersDto dto = new();
-            List<UserDto> users = new();
+            List<ReturnUserDto> users = new();
             foreach(User user in userRepository.GetAll())
             {
-                users.Add(new UserDto
+                users.Add(new ReturnUserDto
                 {
                     Id = user.Id,
                     Username = user.Username
@@ -57,6 +58,56 @@ public class UsersController : ControllerBase
         {
             Console.WriteLine(e); 
             return Results.InternalServerError(e);
+        }
+    }
+    
+    [HttpPut] 
+    public async Task<IResult> UpdateUser([FromBody] UserDto request) {
+        try
+        {
+            User user = new(request.Username, request.Password);
+            user.Id = request.Id;
+            await userRepository.UpdateAsync(user);
+            return Results.Ok();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e); 
+            return Results.Problem(e.Message, statusCode: 500);
+        }
+    }
+    
+    [HttpDelete] 
+    public async Task<IResult> DeleteUser([FromBody] UserIdDto request) {
+        try
+        {
+            await userRepository.DeleteAsync(request.Id);
+            return Results.Ok();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e); 
+            return Results.Problem(e.Message, statusCode: 500);
+        }
+    }
+    
+    [HttpGet("{id}")] 
+    public async Task<IResult> GetUser(int id) {
+        try
+        {
+            User user = await userRepository.GetSingleAsync(id);
+            UserDto userDto = new UserDto
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Password = user.Password
+            };
+            return Results.Ok(userDto);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e); 
+            return Results.Problem();
         }
     }
 }

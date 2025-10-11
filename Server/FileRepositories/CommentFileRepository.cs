@@ -44,7 +44,7 @@ public class CommentFileRepository :  ICommentRepository
         
         foreach (Comment commentToChange in comments)
         {
-            if (commentToChange.Id != comment.Id)
+            if (commentToChange.Id == comment.Id)
             {
                 break;
             }
@@ -68,7 +68,7 @@ public class CommentFileRepository :  ICommentRepository
         
         foreach (Comment commentToChange in comments)
         {
-            if (commentToChange.Id != id)
+            if (commentToChange.Id == id)
             {
                 break;
             }
@@ -98,5 +98,13 @@ public class CommentFileRepository :  ICommentRepository
         string commentsAsJson = File.ReadAllTextAsync(filePath).Result;
         List<Comment> comments = JsonSerializer.Deserialize<List<Comment>>(commentsAsJson)!;
         return comments.AsQueryable();
+    }
+    
+    public IQueryable<Comment> GetAllForPost(int postId)
+    {
+        string commentsAsJson = File.ReadAllTextAsync(filePath).Result;
+        List<Comment> comments = JsonSerializer.Deserialize<List<Comment>>(commentsAsJson)!;
+        List<Comment> filteredComments = comments.Where(comment => comment.PostId == postId).ToList();
+        return filteredComments.AsQueryable();
     }
 }

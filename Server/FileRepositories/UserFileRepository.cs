@@ -41,7 +41,7 @@ public class UserFileRepository : IUserRepository
         
         foreach (User userToChange in users)
         {
-            if (userToChange.Id != user.Id)
+            if (userToChange.Id == user.Id)
             {
                 break;
             }
@@ -65,7 +65,7 @@ public class UserFileRepository : IUserRepository
         
         foreach (User userToChange in users)
         {
-            if (userToChange.Id != id)
+            if (userToChange.Id == id)
             {
                 break;
             }
