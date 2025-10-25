@@ -1,0 +1,62 @@
+@page "/create-post"
+@using System.Net
+@using System.Text
+@using System.Text.Json
+@using ApiContracts
+@using ApiContracts.Post
+@using BlazorApp1.Services
+@inject HttpPostService HttpPostService
+@rendermode InteractiveServer
+
+<PageTitle>Create Post</PageTitle>
+
+<h1>Create Post</h1>
+
+<div style="display: flex; flex-direction: column; width: 100%; height: 200px; justify-content: space-between; align-items: flex-start">
+    <div>
+        <h3>Title:</h3>
+        <input type="text" placeholder="Title" @bind="title"/>
+    </div>
+    <div>
+        <h3>Content:</h3>
+        <input type="text" @bind="content"/>
+    </div>
+    <div>
+        <h3>Author ID:</h3>
+        <input type="number" @bind="authorId"/>
+    </div>
+    <div>
+        <button @onclick="Submit">Submit</button>
+    </div>
+</div>
+<div style=@alertStyling>
+    <div style="width: 100%; padding: 15px; background-color: darkseagreen; margin-top: 30px;">
+        Post created successfully
+    </div>
+</div>
+
+@code {
+    public string title = "";
+    public string content = "";
+    public int authorId;
+    public string alertStyling = "display: none;";
+    
+    public async void Submit()
+    {
+        try
+        {
+            await HttpPostService.AddPostAsync(new CreatePostDto()
+            {
+                Title = title,
+                Body = content,
+                AuthorId = authorId
+            });
+            alertStyling = "display: block;";
+            StateHasChanged();
+        }
+        catch
+        {
+            //Do something in the future maybe
+        }
+    }
+}

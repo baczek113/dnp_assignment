@@ -1,0 +1,76 @@
+@page "/posts"
+@page "/posts/{postId:int}"
+@using System.Net
+@using System.Text
+@using System.Text.Json
+@using ApiContracts
+@using ApiContracts.Post
+@using BlazorApp1.Services
+@using Microsoft.AspNetCore.Mvc.Diagnostics
+@inject HttpPostService HttpPostService
+@inject HttpUserService HttpUserService
+@rendermode InteractiveServer
+
+<PageTitle>Posts</PageTitle>
+
+<h1>Posts</h1>
+
+<div style="display: flex; flex-direction: column; width: 100%; row-gap: 20px; align-items: flex-start">
+    @if (postList != null && postId == 0)
+    {
+        @foreach (var post in postList)
+        {
+            <a href="/posts/@post.Id"><div>@post.Title</div></a>
+        }
+    }
+    else
+    {
+        if (thePost != null && postAuthor != null)
+        {
+            <div
+                style="display: flex; flex-direction: column; width: 400px; height: 200px; padding: 20px; justify-content: space-between; align-items: flex-start;">
+                <h3>@thePost.Title</h3>
+                <div>By <b>@postAuthor.Username</b></div>
+                <div>Content: <br/>@thePost.Body</div>
+            </div>
+        }
+    }
+</div>
+
+@code {
+    [Parameter] public int postId { get; set; }
+    public GetPostsDto getPostsDto;
+    public List<PostDto>? postList;
+    public PostDto? thePost;
+    public UserDto? postAuthor;
+
+    private async Task loadComponent()
+    {
+        try
+        {
+            getPostsDto = await HttpPostService.GetPostsAsync();
+            postList = getPostsDto.Posts;
+            if (postId != 0)
+            {
+                thePost = postList.Where(post => post.Id == postId).ToList()[0];
+                postAuthor = await HttpUserService.GetUserAsync(thePost.AuthorId);
+            }
+
+            StateHasChanged();
+        }
+        catch (Exception response)
+        {
+            //Do something in the future maybe
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await loadComponent();
+    }
+
+    protected override void OnParametersSet()
+    {
+        loadComponent();
+    }
+}

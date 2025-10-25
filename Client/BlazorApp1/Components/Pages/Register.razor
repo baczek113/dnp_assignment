@@ -1,0 +1,55 @@
+@page "/register"
+@using System.Net
+@using System.Text
+@using System.Text.Json
+@using ApiContracts
+@using BlazorApp1.Services
+@inject HttpUserService HttpUserService
+@rendermode InteractiveServer
+
+<PageTitle>Register</PageTitle>
+
+<h1>Register</h1>
+
+<div style="display: flex; flex-direction: column; width: 100%; height: 200px; justify-content: space-between; align-items: flex-start">
+    <div>
+        <h3>Username:</h3>
+        <input type="text" placeholder="Username" @bind="username"/>
+    </div>
+    <div>
+        <h3>Password:</h3>
+        <input type="password" @bind="password"/>
+    </div>
+    <div>
+        <button @onclick="Submit">Submit</button>
+    </div>
+</div>
+<div style=@alertStyling>
+    <div style="width: 100%; padding: 15px; background-color: darkseagreen; margin-top: 30px;">
+        User account created successfully
+    </div>
+</div>
+
+@code {
+    public string username = "";
+    public string password = "";
+    public string alertStyling = "display: none;";
+    
+    public async void Submit()
+    {
+        try
+        {
+            await HttpUserService.AddUserAsync(new CreateUserDto
+            {
+                Username = username,
+                Password = password
+            });
+            alertStyling = "display: block;";
+            StateHasChanged();
+        }
+        catch
+        {
+            //Do something in the future maybe
+        }
+    }
+}
