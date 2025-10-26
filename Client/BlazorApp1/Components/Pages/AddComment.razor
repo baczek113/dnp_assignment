@@ -1,0 +1,48 @@
+@page "/add-comment/{postId:int}"
+@inject NavigationManager NavigationManager
+@using System.Net
+@using System.Text
+@using System.Text.Json
+@using ApiContracts
+@using ApiContracts.Comment
+@using ApiContracts.Post
+@using BlazorApp1.Services
+@using Microsoft.AspNetCore.Mvc.Diagnostics
+@inject HttpCommentService HttpCommentService
+@rendermode InteractiveServer
+
+<PageTitle>Add Comment</PageTitle>
+
+<h1>Add Comment</h1>
+
+<h4>User Id</h4>
+<input type="number" @bind="authorId"/>
+<br/>
+<h4>Enter comment body:</h4>
+<input @bind="body"/><br/>
+<button @onclick="Submit">Publish</button>
+
+@code {
+    [Parameter]
+    public int postId { get; set; }
+    public int authorId;
+    public string body;
+
+    public async Task Submit()
+    {
+        try
+        {
+            await HttpCommentService.AddCommentAsync(new CreateCommentDto()
+            {
+                Body = body,
+                AuthorId = authorId,
+                PostId = postId
+            });
+            NavigationManager.NavigateTo("posts/"+postId);
+        }
+        catch
+        {
+            //Do something in the future maybe
+        }
+    }
+}

@@ -4,16 +4,18 @@
 @using System.Text
 @using System.Text.Json
 @using ApiContracts
+@using ApiContracts.Comment
 @using ApiContracts.Post
 @using BlazorApp1.Services
 @using Microsoft.AspNetCore.Mvc.Diagnostics
 @inject HttpPostService HttpPostService
 @inject HttpUserService HttpUserService
+@inject HttpCommentService HttpCommentService
 @rendermode InteractiveServer
 
-<PageTitle>Posts</PageTitle>
+<PageTitle>@((thePost!=null) ? thePost.Title : "Posts")</PageTitle>
 
-<h1>Posts</h1>
+<h1>@((thePost!=null) ? thePost.Title : "Posts")</h1>
 
 <div style="display: flex; flex-direction: column; width: 100%; row-gap: 20px; align-items: flex-start">
     @if (postList != null && postId == 0)
@@ -25,14 +27,22 @@
     }
     else
     {
-        if (thePost != null && postAuthor != null)
+        if (thePost != null && postAuthor != null && comments != null)
         {
             <div
-                style="display: flex; flex-direction: column; width: 400px; height: 200px; padding: 20px; justify-content: space-between; align-items: flex-start;">
-                <h3>@thePost.Title</h3>
+                style="display: flex; flex-direction: column; width: 400px; padding: 20px; justify-content: space-between; align-items: flex-start;">
                 <div>By <b>@postAuthor.Username</b></div>
                 <div>Content: <br/>@thePost.Body</div>
+                <div>
+                    <h3>Comments:</h3>
+                    @foreach (var comment in comments)
+                    {
+                        <h5>@commentAuthorNames[comment.AuthorId] said:</h5>
+                        <div>@comment.Body</div>
+                    }
+                </div>
             </div>
+            <a style="padding: 15px; text-decoration: none; color: white; background-color: lightslategray" href="/add-comment/@thePost.Id">Add a comment</a>
         }
     }
 </div>
@@ -43,34 +53,50 @@
     public List<PostDto>? postList;
     public PostDto? thePost;
     public UserDto? postAuthor;
+    public List<CommentDto>? comments;
+    public Dictionary<int, string>? commentAuthorNames;
 
-    private async Task loadComponent()
+    private async Task LoadComponent()
     {
         try
         {
-            getPostsDto = await HttpPostService.GetPostsAsync();
-            postList = getPostsDto.Posts;
-            if (postId != 0)
+            if (postId == 0)
             {
-                thePost = postList.Where(post => post.Id == postId).ToList()[0];
-                postAuthor = await HttpUserService.GetUserAsync(thePost.AuthorId);
+                getPostsDto = await HttpPostService.GetPostsAsync();
+                postList = getPostsDto.Posts;
             }
-
+            else
+            {
+                thePost = await HttpPostService.GetPostAsync(postId);
+                postAuthor = await HttpUserService.GetUserAsync(thePost.AuthorId);
+                GetCommentsDto commentsDto = await HttpCommentService.GetCommentsAsync(thePost.Id);
+                comments = commentsDto.Comments;
+                commentAuthorNames = new Dictionary<int, string>();
+                foreach (var commentDto in comments)
+                {
+                    if (!commentAuthorNames.ContainsKey(commentDto.AuthorId))
+                    {
+                        UserDto userDto = await HttpUserService.GetUserAsync(commentDto.AuthorId);
+                        commentAuthorNames[userDto.Id] = userDto.Username;
+                    }
+                }
+            }
             StateHasChanged();
         }
         catch (Exception response)
         {
+            Console.WriteLine(response.Message);
             //Do something in the future maybe
         }
     }
 
     protected override async Task OnInitializedAsync()
     {
-        await loadComponent();
+        await LoadComponent();
     }
 
     protected override void OnParametersSet()
     {
-        loadComponent();
+        LoadComponent();
     }
 }

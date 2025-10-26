@@ -35,4 +35,15 @@ public class HttpPostService : IPostService
         }
         return JsonSerializer.Deserialize<GetPostsDto>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
     }
+
+    public async Task<PostDto> GetPostAsync(int id)
+    {
+        HttpResponseMessage httpResponse = client.GetAsync("post/"+id).Result;
+        string response = await httpResponse.Content.ReadAsStringAsync();
+        if (!httpResponse.IsSuccessStatusCode)
+        {
+            throw new Exception(response);
+        }
+        return JsonSerializer.Deserialize<PostDto>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+    }
 }

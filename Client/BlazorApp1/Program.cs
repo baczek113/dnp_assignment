@@ -10,6 +10,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddScoped(sp => new HttpClient{ BaseAddress = new Uri("http://localhost:5025") } );
 builder.Services.AddScoped<HttpUserService>();
 builder.Services.AddScoped<HttpPostService>();
+builder.Services.AddScoped<HttpCommentService>();
 
 var app = builder.Build();
 

@@ -7,4 +7,5 @@ public interface IPostService
 {
     public Task<PostDto> AddPostAsync(CreatePostDto request);
     public Task<GetPostsDto> GetPostsAsync();
+    public Task<PostDto> GetPostAsync(int id);
 }
