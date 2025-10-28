@@ -1,29 +1,31 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">BlazorApp1</a>
+﻿<div class="custom-navmenu">
+    <!-- Mobile toggle button -->
+    <input type="checkbox" title="Navigation menu" class="custom-nav-toggler" id="navToggle" />
+    <label for="navToggle">&#9776;</label>
+
+    <!-- Top header / website name -->
+    <div class="custom-nav-header">
+        <a class="custom-nav-brand" href="">Fakesbook</a>
     </div>
-</div>
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler"/>
-
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-    <nav class="nav flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="posts" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> View Posts
-            </NavLink>
+    <!-- Navigation links -->
+    <div class="custom-nav-links" onclick="document.getElementById('navToggle').click()">
+        <div class="custom-nav-item">
+            <a class="custom-nav-link" href="posts" Match="NavLinkMatch.All">
+                <span class="custom-nav-icon bi bi-house-door-fill"></span> View Posts
+            </a>
         </div>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="register">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Register
-            </NavLink>
+        <div class="custom-nav-item">
+            <a class="custom-nav-link" href="register">
+                <span class="custom-nav-icon bi bi-person-plus-fill"></span> Register
+            </a>
         </div>
-        
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="create-post">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Create Post
-            </NavLink>
+
+        <div class="custom-nav-item">
+            <a class="custom-nav-link" href="create-post">
+                <span class="custom-nav-icon bi bi-plus-square-fill"></span> Create Post
+            </a>
         </div>
-    </nav>
+    </div>
 </div>

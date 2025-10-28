@@ -13,14 +13,23 @@
 
 <PageTitle>Add Comment</PageTitle>
 
-<h1>Add Comment</h1>
+<div class="register-card">
+    <h1>Add Comment</h1>
 
-<h4>User Id</h4>
-<input type="number" @bind="authorId"/>
-<br/>
-<h4>Enter comment body:</h4>
-<input @bind="body"/><br/>
-<button @onclick="Submit">Publish</button>
+    <div>
+        <h3>User ID:</h3>
+        <input type="number" placeholder="User ID" @bind="authorId" />
+    </div>
+
+    <div>
+        <h3>Comment:</h3>
+        <textarea placeholder="Enter your comment..." @bind="body"></textarea>
+    </div>
+
+    <div>
+        <button @onclick="Submit">Publish</button>
+    </div>
+</div>
 
 @code {
     [Parameter]

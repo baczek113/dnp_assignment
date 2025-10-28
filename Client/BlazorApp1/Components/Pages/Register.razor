@@ -9,25 +9,26 @@
 
 <PageTitle>Register</PageTitle>
 
-<h1>Register</h1>
+<div class="register-card">
+    <h1>Register</h1>
 
-<div style="display: flex; flex-direction: column; width: 100%; height: 200px; justify-content: space-between; align-items: flex-start">
     <div>
         <h3>Username:</h3>
-        <input type="text" placeholder="Username" @bind="username"/>
+        <input type="text" placeholder="Username" @bind="username" />
     </div>
+
     <div>
         <h3>Password:</h3>
-        <input type="password" @bind="password"/>
+        <input type="password" @bind="password" />
     </div>
+
     <div>
         <button @onclick="Submit">Submit</button>
     </div>
 </div>
-<div style=@alertStyling>
-    <div style="width: 100%; padding: 15px; background-color: darkseagreen; margin-top: 30px;">
-        User account created successfully
-    </div>
+
+<div class="success-alert @(alertStyling == "display: block;" ? "active" : "")">
+    <div>User account created successfully</div>
 </div>
 
 @code {

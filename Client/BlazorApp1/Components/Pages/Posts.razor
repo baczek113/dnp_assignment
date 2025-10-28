@@ -13,38 +13,47 @@
 @inject HttpCommentService HttpCommentService
 @rendermode InteractiveServer
 
-<PageTitle>@((thePost!=null) ? thePost.Title : "Posts")</PageTitle>
+<PageTitle>@((thePost != null) ? thePost.Title : "Posts")</PageTitle>
 
-<h1>@((thePost!=null) ? thePost.Title : "Posts")</h1>
+<div class="posts-container">
+    <h1 class="page-title">@((thePost != null) ? thePost.Title : "Posts")</h1>
 
-<div style="display: flex; flex-direction: column; width: 100%; row-gap: 20px; align-items: flex-start">
-    @if (postList != null && postId == 0)
-    {
-        @foreach (var post in postList)
+    <div class="posts-content">
+        @if (postList != null && postId == 0)
         {
-            <a href="/posts/@post.Id"><div>@post.Title</div></a>
-        }
-    }
-    else
-    {
-        if (thePost != null && postAuthor != null && comments != null)
-        {
-            <div
-                style="display: flex; flex-direction: column; width: 400px; padding: 20px; justify-content: space-between; align-items: flex-start;">
-                <div>By <b>@postAuthor.Username</b></div>
-                <div>Content: <br/>@thePost.Body</div>
-                <div>
-                    <h3>Comments:</h3>
-                    @foreach (var comment in comments)
-                    {
-                        <h5>@commentAuthorNames[comment.AuthorId] said:</h5>
-                        <div>@comment.Body</div>
-                    }
-                </div>
+            <div class="post-list-container">
+                @foreach (var post in postList)
+                {
+                    <a class="post-list-item" href="/posts/@post.Id">
+                        <div>@post.Title</div>
+                    </a>
+                }
             </div>
-            <a style="padding: 15px; text-decoration: none; color: white; background-color: lightslategray" href="/add-comment/@thePost.Id">Add a comment</a>
         }
-    }
+        else
+        {
+            if (thePost != null && postAuthor != null && comments != null)
+            {
+                <div class="single-post">
+                    <div class="post-meta">By <b>@postAuthor.Username</b></div>
+                    <div class="post-body">@thePost.Body</div>
+
+                    <div class="comments-section">
+                        <h3>Comments</h3>
+                        @foreach (var comment in comments)
+                        {
+                            <div class="comment">
+                                <h5 class="comment-author">@commentAuthorNames[comment.AuthorId] said:</h5>
+                                <div class="comment-body">@comment.Body</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <a class="add-comment-button" href="/add-comment/@thePost.Id">Add a comment</a>
+            }
+        }
+    </div>
 </div>
 
 @code {
@@ -95,8 +104,9 @@
         await LoadComponent();
     }
 
-    protected override void OnParametersSet()
+    protected override async void OnParametersSet()
     {
-        LoadComponent();
+        await LoadComponent();
     }
+
 }
