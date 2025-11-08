@@ -14,6 +14,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\ApiContracts\ApiContracts.csproj" />
+      <ProjectReference Include="..\..\Client\BlazorApp1\BlazorApp1.csproj" />
       <ProjectReference Include="..\FileRepositories\FileRepositories.csproj" />
     </ItemGroup>
 

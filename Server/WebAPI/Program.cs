@@ -1,4 +1,6 @@
+using BlazorApp1.Auth;
 using FileRepositories;
+using Microsoft.AspNetCore.Components.Authorization;
 using RepositoryContracts;
 
 var builder = WebApplication.CreateBuilder(args);
