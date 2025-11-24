@@ -26,7 +26,7 @@ public class CommentController : ControllerBase
             {
                 PostId = request.PostId,
                 Body = request.Body,
-                AuthorId = request.AuthorId
+                UserId = request.AuthorId
             };
             Comment created = await commentRepository.AddAsync(comment);
             CommentDto dto = new()
@@ -34,9 +34,9 @@ public class CommentController : ControllerBase
                 Id = created.Id,
                 Body = created.Body,
                 PostId = created.PostId,
-                AuthorId = created.AuthorId
+                AuthorId = created.UserId
             };
-            return Created($"/comments/{dto.Id}", created);
+            return Created($"/comments/{dto.Id}", dto);
         }
         catch (Exception e)
         {
@@ -57,7 +57,7 @@ public class CommentController : ControllerBase
                     Id = comment.Id,
                     PostId = comment.PostId,
                     Body = comment.Body,
-                    AuthorId = comment.AuthorId
+                    AuthorId = comment.UserId
                 });
             }
             var dto = new GetCommentsDto
@@ -81,7 +81,7 @@ public class CommentController : ControllerBase
             {
                 PostId = request.PostId,
                 Body = request.Body,
-                AuthorId = request.AuthorId,
+                UserId = request.AuthorId,
                 Id = request.Id
             };
             await commentRepository.UpdateAsync(post);
@@ -118,7 +118,7 @@ public class CommentController : ControllerBase
                 Id = comment.Id,
                 PostId = comment.PostId,
                 Body = comment.Body,
-                AuthorId = comment.AuthorId
+                AuthorId = comment.UserId
             };
             return Results.Ok(commentDto);
         }
@@ -130,18 +130,19 @@ public class CommentController : ControllerBase
     }
     
     [HttpGet("forPost/{postId}")] 
-    public IResult GetComments(int postId) {
+    public async Task<IResult> GetComments(int postId) {
         try
         {
             List<CommentDto> comments = new();
-            foreach(Comment comment in commentRepository.GetAllForPost(postId))
+            List<Comment> commentsQuery = await commentRepository.GetAllForPostAsync(postId);
+            foreach(Comment comment in commentsQuery)
             {
                 comments.Add(new CommentDto
                 {
                     Id = comment.Id,
                     PostId = comment.PostId,
                     Body = comment.Body,
-                    AuthorId = comment.AuthorId
+                    AuthorId = comment.UserId
                 });
             }
             var dto = new GetCommentsDto
@@ -152,8 +153,12 @@ public class CommentController : ControllerBase
         }
         catch (Exception e)
         {
-            Console.WriteLine(e); 
-            return Results.InternalServerError(e);
+            Console.WriteLine(e);
+            return Results.Problem(
+                detail: e.Message, 
+                statusCode: 500,
+                title: "An unexpected error occurred"
+            );
         }
     }
 }

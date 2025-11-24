@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddScoped(sp => new HttpClient{ BaseAddress = new Uri("http://localhost:5025") } );
+builder.Services.AddScoped(sp => new HttpClient{ BaseAddress = new Uri("http://localhost:5028") } );
 builder.Services.AddScoped<HttpUserService>();
 builder.Services.AddScoped<HttpPostService>();
 builder.Services.AddScoped<HttpCommentService>();
@@ -24,8 +24,6 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
-app.UseStatusCodePagesWithReExecute("/not-found", createScopeForErrors: true);
 
 app.UseHttpsRedirection();
 

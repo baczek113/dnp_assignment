@@ -43,7 +43,7 @@ public class ManagePostsView
         {
             return post;
         }
-        post.AuthorId = int.Parse(idInput);
+        post.UserId = int.Parse(idInput);
         post =  await postRepository.AddAsync(post);
         Console.WriteLine("Post Added Successfully");
         return post;
@@ -70,7 +70,7 @@ public class ManagePostsView
         {
             if (comment.PostId == postId)
             {
-                Console.WriteLine($"AuthorId: {comment.AuthorId}, Body: {comment.Body}");
+                Console.WriteLine($"AuthorId: {comment.UserId}, Body: {comment.Body}");
             }
         }
         return;

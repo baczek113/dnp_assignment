@@ -21,7 +21,7 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<ReturnUserDto>> AddUser([FromBody] CreateUserDto request) {
         try
         {
-            User user = new(request.Username, request.Password);
+            User user = new User{Username = request.Username, Password = request.Password};
             User created = await userRepository.AddAsync(user);
             ReturnUserDto dto = new()
             {

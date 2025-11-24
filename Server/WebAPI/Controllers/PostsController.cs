@@ -25,7 +25,7 @@ public class PostController : ControllerBase
             {
                 Title = request.Title,
                 Body = request.Body,
-                AuthorId = request.AuthorId
+                UserId = request.AuthorId
             };
             Post created = await postRepository.AddAsync(post);
             PostDto dto = new()
@@ -33,9 +33,9 @@ public class PostController : ControllerBase
                 Id = created.Id,
                 Title = created.Title,
                 Body = created.Body,
-                AuthorId = created.AuthorId
+                AuthorId = created.UserId
             };
-            return Created($"/posts/{dto.Id}", created);
+            return Created($"/posts/{dto.Id}", dto);
         }
         catch (Exception e)
         {
@@ -56,7 +56,7 @@ public class PostController : ControllerBase
                     Id = post.Id,
                     Title = post.Title,
                     Body = post.Body,
-                    AuthorId = post.AuthorId
+                    AuthorId = post.UserId
                 });
             }
             var dto = new GetPostsDto
@@ -80,7 +80,7 @@ public class PostController : ControllerBase
             {
                 Title = request.Title,
                 Body = request.Body,
-                AuthorId = request.AuthorId,
+                UserId = request.AuthorId,
                 Id = request.Id
             };
             await postRepository.UpdateAsync(post);
@@ -117,7 +117,7 @@ public class PostController : ControllerBase
                 Id = post.Id,
                 Title = post.Title,
                 Body = post.Body,
-                AuthorId = post.AuthorId
+                AuthorId = post.UserId
             };
             return Results.Ok(postDto);
         }

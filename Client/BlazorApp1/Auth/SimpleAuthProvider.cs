@@ -21,6 +21,7 @@ public class SimpleAuthProvider : AuthenticationStateProvider
         HttpResponseMessage response =
             await httpClient.PostAsJsonAsync("auth/", new LoginRequest{Username = userName, Password = password});
         string content = await response.Content.ReadAsStringAsync();
+        Console.WriteLine("Status code: " + response.StatusCode);
         if (!response.IsSuccessStatusCode)
         {
             throw new Exception(content);

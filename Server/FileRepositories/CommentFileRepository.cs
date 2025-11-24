@@ -99,7 +99,12 @@ public class CommentFileRepository :  ICommentRepository
         List<Comment> comments = JsonSerializer.Deserialize<List<Comment>>(commentsAsJson)!;
         return comments.AsQueryable();
     }
-    
+
+    public Task<List<Comment>> GetAllForPostAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public IQueryable<Comment> GetAllForPost(int postId)
     {
         string commentsAsJson = File.ReadAllTextAsync(filePath).Result;

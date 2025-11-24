@@ -18,7 +18,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost] 
-    public async Task<ActionResult<ReturnUserDto>> AuthenticateLogin([FromBody] LoginRequest request) {
+    public async Task<IResult> AuthenticateLogin([FromBody] LoginRequest request) {
         try
         {
             foreach(User user in userRepository.GetAll())
@@ -30,15 +30,15 @@ public class AuthController : ControllerBase
                         Id = user.Id,
                         Username = user.Username
                     };
-                    return Accepted($"/users/{dto.Id}", dto);
+                    return Results.Ok(dto);
                 }
             }
-            return Unauthorized();
+            return Results.Unauthorized();
         }
         catch (Exception e)
         {
             Console.WriteLine(e); 
-            return StatusCode(500, e.Message);
+            return Results.BadRequest();
         }
     }
 }

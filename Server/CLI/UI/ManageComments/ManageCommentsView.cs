@@ -42,7 +42,7 @@ public class ManageCommentsView
         {
             return comment;
         }
-        comment.AuthorId = int.Parse(authorIdInput);
+        comment.UserId = int.Parse(authorIdInput);
         comment =  await commentRepository.AddAsync(comment);
         Console.WriteLine("Comment Added Successfully");
         return comment;
